@@ -1,10 +1,7 @@
 name: Simulate Merge Queue
 
 on:
-  pull_request:
-    branches: [ "master" ]
   merge_group:
-    types: [checks_requested]
 
 jobs:
   simulate-job:
@@ -18,7 +15,7 @@ jobs:
         id: delay
         run: |
           # Generate a random delay between 120 seconds (2 min) and 240 seconds (4 min)
-          DELAY=$((120 + RANDOM % 121))
+          DELAY=$((60 + RANDOM % 61))
           echo "Waiting for $DELAY seconds..."
           echo "delay=$DELAY" >> $GITHUB_ENV
 
