@@ -14,7 +14,7 @@ jobs:
       - name: Generate Random Delay
         id: delay
         run: |
-          # Generate a random delay between 120 seconds (2 min) and 240 seconds (4 min)
+          # Generate a random delay between 60 seconds (1 min) and 121 seconds (2 min)
           DELAY=$((60 + RANDOM % 61))
           echo "Waiting for $DELAY seconds..."
           echo "delay=$DELAY" >> $GITHUB_ENV
@@ -29,9 +29,9 @@ jobs:
           RANDOM_NUM=$((RANDOM % 100))
           echo "Generated random number: $RANDOM_NUM"
           
-          # Fail the job if the random number is less than 30 (30% chance)
-          if [ $RANDOM_NUM -lt 30 ]; then
-            echo "Simulating a failure... (30% chance hit)"
+          # Fail the job if the random number is less than 50 (50% chance)
+          if [ $RANDOM_NUM -lt 50 ]; then
+            echo "Simulating a failure... (50% chance hit)"
             exit 1
           fi
           echo "Simulation passed!"
