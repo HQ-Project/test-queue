@@ -1,7 +1,6 @@
 name: Simulate Merge Queue
 
 on:
-  pull_request:
   merge_group:
     branches: master
 
