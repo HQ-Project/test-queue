@@ -1,8 +1,10 @@
 name: Simulate Merge Queue
 
 on:
+  pull_request:
+    branches: [ "master" ]
   merge_group:
-    branches: master
+    types: [checks_requested]
 
 jobs:
   simulate-job:
