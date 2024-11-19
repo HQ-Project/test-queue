@@ -1,0 +1,47 @@
+name: Simulate Merge Queue
+
+on:
+  pull_request:
+  merge_group:
+    branches: master
+
+jobs:
+  simulate-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Generate Random Delay
+        id: delay
+        run: |
+          # Generate a random delay between 120 seconds (2 min) and 240 seconds (4 min)
+          DELAY=$((120 + RANDOM % 121))
+          echo "Waiting for $DELAY seconds..."
+          echo "delay=$DELAY" >> $GITHUB_ENV
+
+      - name: Wait Random Time
+        run: sleep ${{ env.delay }}
+
+      - name: Simulate 30% Failure
+        id: simulate-failure
+        run: |
+          # Generate a random number between 0 and 99
+          RANDOM_NUM=$((RANDOM % 100))
+          echo "Generated random number: $RANDOM_NUM"
+          
+          # Fail the job if the random number is less than 30 (30% chance)
+          if [ $RANDOM_NUM -lt 30 ]; then
+            echo "Simulating a failure... (30% chance hit)"
+            exit 1
+          fi
+          echo "Simulation passed!"
+
+      - name: Report Success
+        if: success()
+        run: echo "Workflow completed successfully 🎉"
+
+      - name: Report Failure
+        if: failure()
+        run: echo "Workflow failed due to simulated failure. 💥"
