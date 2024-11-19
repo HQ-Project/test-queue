@@ -3,6 +3,10 @@ name: Simulate Merge Queue
 on:
   merge_group:
 
+concurrency:
+  group: merge_queue_group
+  cancel-in-progress: false
+
 jobs:
   simulate-job:
     runs-on: ubuntu-latest
@@ -14,15 +18,15 @@ jobs:
       - name: Generate Random Delay
         id: delay
         run: |
-          # Generate a random delay between 60 seconds (1 min) and 121 seconds (2 min)
-          DELAY=$((60 + RANDOM % 61))
+          # Generate a random delay between 0 seconds and 60 seconds (1 min)
+          DELAY=$((RANDOM % 61))
           echo "Waiting for $DELAY seconds..."
           echo "delay=$DELAY" >> $GITHUB_ENV
 
       - name: Wait Random Time
         run: sleep ${{ env.delay }}
 
-      - name: Simulate 30% Failure
+      - name: Simulate 50% Failure
         id: simulate-failure
         run: |
           # Generate a random number between 0 and 99
